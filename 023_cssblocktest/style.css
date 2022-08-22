@@ -1,0 +1,9 @@
+* {
+    border: blue solid 1px;
+}
+
+.divbox1 {
+    border-color: orange;
+    height:200px;
+    width:500px;
+}
