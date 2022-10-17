@@ -2,36 +2,42 @@ import fetch from 'node-fetch'
 import jsdom from 'jsdom'
 
 async function main() {
-    // TODO
-    const user = 'azugxi7374'
+    if (process.argv.length < 2) {
+        console.error('ERROR: undefined username.');
+    }
+    const user = process.argv[2];
 
     const url = `https://github.com/${user}`;
     const f = fetch(url);
 
     const res = await f;
-    const text = await res.text();
+    if (res.status >= 400) {
+        console.error(`ERROR: ${res.statusText}`);
+        return;
+    } else {
+        const text = await res.text();
 
-    const dom = new jsdom.JSDOM(text);
+        const dom = new jsdom.JSDOM(text);
+        const a = Array.from(dom.window.document.querySelectorAll('.js-calendar-graph-svg rect.ContributionCalendar-day'))
 
-    const a = Array.from(dom.window.document.querySelectorAll('rect.ContributionCalendar-day'))
+        const calendar = a.map(e => ({ count: e.dataset.count, date: e.dataset.date }))
 
-    const commitCounts = a.map(e => e.dataset.count)
-
-    let current = 0;
-
-    while (current < commitCounts.length) {
-        if (commitCounts[commitCounts.length - 1 - current] == 0) {
-            break;
-        } else {
-            current++;
+        let lastContributed = null;
+        let current = 0;
+        let longest = 0;
+        {
+            for (let i = 0; i < calendar.length; i++) {
+                if (calendar[i].count > 0) {
+                    // committed
+                    lastContributed = calendar[i].date;
+                    current++;
+                    longest = Math.max(longest, current);
+                } else {
+                    current = 0;
+                }
+            }
         }
+        console.log({ user, currentStreak: current, lastContributed, longestStreak: longest });
     }
-    console.log({ current });
-    // const longest = 0;
-    // const current = 0;
-
-
-
-    // console.log(text);
 }
 main();
