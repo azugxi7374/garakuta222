@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+
+    <title>ブラウザのFPSを測る</title>
+    <style>
+        :root {
+            --obj-width: 20px;
+        }
+
+        html {
+            height: 100%;
+        }
+
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+
+        .container {
+            width: 100%;
+            padding: 0 var(--obj-width) 0 0;
+        }
+
+        .object-container {
+            margin: 0 0 30px 0;
+        }
+
+        .input-speed {
+            height: var(--obj-width);
+            margin: 5px;
+        }
+
+        .object {
+            width: var(--obj-width);
+            height: var(--obj-width);
+            background-color: blue;
+            position: relative;
+            left: 0%;
+        }
+
+        .object-container canvas {
+            width: 100%;
+            height: var(--obj-width);
+        }
+
+        .fps {
+            bottom: 0;
+            right: 0;
+            position: fixed;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="fps" id="fps">
+        <span id="js-fps"></span>
+        <span id="dom-fps"></span>
+    </div>
+    <div class="container">
+        <div class="object-container">
+            <label for="input1">SPEED:</label>
+            <input class="input-speed" type="text" id="input1">
+            <div class="object" id="obj1"></div>
+        </div>
+        <div class="object-container">
+            <label for="input2">SPEED:</label>
+            <input class="input-speed" type="text" id="input2">
+            <div class="object" id="obj2"></div>
+        </div>
+        <div class="object-container">
+            <canvas id="canvas3"></canvas>
+        </div>
+    </div>
+
+    <script src="index.js"></script>
+</body>
