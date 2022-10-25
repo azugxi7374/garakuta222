@@ -1,0 +1,1 @@
+bookmarklet ./index.js | pbcopy
